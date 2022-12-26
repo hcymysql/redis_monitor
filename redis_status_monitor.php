@@ -161,9 +161,9 @@ echo "<p>";
 <table border="1" width="100%" bgcolor="#B2DBFB">
         <tr>
                 <td width="1050" align="center">基本信息</td>
-                <td width="550" align="center">线程/会话</td>
+                <td width="500" align="center">线程/会话</td>
                 <td width="400" align="center">内存</td>
-                <td width="158" align="center">性能</td>
+                <td width="250" align="center">性能</td>
         </tr>
 </table>
 
@@ -186,6 +186,7 @@ echo "<p>";
 <th>最大内存</th>
 <th>已经使用内存</th>
 <th>内存消耗峰值</th>
+<th>同步延迟</th>
 <th>每秒QPS</th>
 <th>图表</th>
 </tr>
@@ -256,6 +257,7 @@ echo "<td>{$row['rejected_connected']}</td>";
 echo "<td>{$row['maxmemory_human']}</td>";
 echo "<td>{$row['used_memory_rss_human']}</td>";
 echo "<td>{$row['used_memory_peak_human']}</td>";
+echo "<td>{$row['Seconds_Behind_Master']}</td>";
 echo "<td>{$row['qps']}</td>";
 echo "<td><a href='javascript:void(0);' onclick=\"x_admin_show('历史信息图表','show_graph.php?ip={$row['host']}&tag={$row['tag']}&port={$row['port']}')\"><img src='image/chart.gif' /></a></td>";
 echo "</tr>";
