@@ -13,7 +13,7 @@ $interval_time = isset($interval_time) ? $interval_time : 'DATE_SUB(now(),interv
                   type:"post",
                   async:false,
                   //url:"get_graph_data.php",
-		  url:"db_connect_graph_getdata.php?fn=index&ip=<?php echo $ip;?>&dbname=<?php echo $dbname;?>&port=<?php echo $port;?>
+		  url:"db_connect_graph_getdata.php?fn=index&ip=<?php echo $ip;?>&tag=<?php echo $tag;?>&port=<?php echo $port;?>
 		  &interval_time=<?php echo $interval_time;?>",
                   data:{},
                   dataType:"json",
