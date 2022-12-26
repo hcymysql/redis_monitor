@@ -1,6 +1,7 @@
 <?php
 
 //https://www.runoob.com/redis/redis-php.html
+//https://www.php.cn/redis/448593.html
 
 error_reporting(E_USER_WARNING | E_USER_NOTICE);
 ini_set('date.timezone','Asia/Shanghai');
