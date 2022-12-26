@@ -257,7 +257,7 @@ echo "<td>{$row['maxmemory_human']}</td>";
 echo "<td>{$row['used_memory_rss_human']}</td>";
 echo "<td>{$row['used_memory_peak_human']}</td>";
 echo "<td>{$row['qps']}</td>";
-echo "<td><a href='javascript:void(0);' onclick=\"x_admin_show('历史信息图表','show_graph.php?ip={$row['1']}&tag={$row['2']}&port={$row['3']}')\"><img src='image/chart.gif' /></a></td>";
+echo "<td><a href='javascript:void(0);' onclick=\"x_admin_show('历史信息图表','show_graph.php?ip={$row['host']}&tag={$row['tag']}&port={$row['port']}')\"><img src='image/chart.gif' /></a></td>";
 echo "</tr>";
 }
 //end while
