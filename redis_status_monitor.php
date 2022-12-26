@@ -160,8 +160,8 @@ echo "<p>";
 
 <table border="1" width="100%" bgcolor="#B2DBFB">
         <tr>
-                <td width="1050" align="center">基本信息</td>
-                <td width="480" align="center">线程/会话</td>
+                <td width="780" align="center">基本信息</td>
+                <td width="550" align="center">线程/会话</td>
                 <td width="400" align="center">内存</td>
                 <td width="158" align="center">性能</td>
         </tr>
