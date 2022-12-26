@@ -123,7 +123,30 @@ return true;
             }
 	?>
         </select>
-	
+
+	<select id="select" name="alive">
+	    <option value="">主机状态</option>
+	<?php
+	    require 'conn.php';
+            $result = mysqli_query($con,"SELECT DISTINCT(is_live) FROM redis_status");	
+            while($row = mysqli_fetch_array($result)){
+		//$dbrole_original=$row[0];
+		//$dbrole=$row[0]==1?'主':'从';
+                //保留下拉列表框选项
+                    if(isset($_POST['alive']) || isset($_GET['alive'])){
+			//$dbrole=$row[0]==1?'是':'否';
+                        if($_POST['alive'] == $row[0] || $_GET['alive'] == $row[0]){
+			    //$dbrole=$row[0]==1?'是':'否';
+                            echo "<option selected='selected' value=\"".$row[0]."\">".$row[0]."</option>"."<br>";
+                        } else { 
+                            echo "<option value=\"".$row[0]."\">".$row[0]."</option>"."<br>";
+                        }
+                    } else{ echo "<option value=\"".$row[0]."\">".$row[0]."</option>"."<br>";}
+                
+                //echo "<option value=\"".$row[0]."\">".$row[0]."</option>"."<br>";
+            }
+	?>
+        </select>		
 
             &nbsp;&nbsp;输入Reis端口号:
            <input type='text' name='dbport' value=''>
@@ -149,6 +172,7 @@ echo "<p>";
         $dbip=$_POST['dbip'];
         $dbport=$_POST['dbport'];
 	$dbrole=$_POST['dbrole'];
+	$alive=$_POST['alive'];
         //session_start();
 	//$_SESSION['transmit_tag']=$tag;
         //require 'show.html';
@@ -222,6 +246,11 @@ $startCount=($page-1)*$perNumber; //分页开始,根据此方法计算出开始�
     if(!empty($dbrole)){
         $condition.=" AND role='{$dbrole}'";
     }
+     if(!empty($alive)){
+        $condition.=" AND is_live='{$alive}'";
+    } elseif($alive == 0 and $alive!=''){
+        $condition.=" AND is_live='{$alive}'";
+    } else {}
    
 	$sql = "SELECT * FROM redis_status WHERE $condition order by host ASC,id ASC LIMIT $startCount,$perNumber";
  	//echo $sql."<br>";   
