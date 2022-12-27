@@ -122,7 +122,6 @@ https://github.com/X-Mars/Zabbix-Alert-WeChat/blob/master/README.md 看此教程
 
 # crontab -l
     */1 * * * * /usr/bin/php /var/www/html/redis_monitor/check_redis_status.php > /dev/null 2 >&1
-    
 ##### check_redis_status.php（用来采集被监控端Redis状态信息和触发报警）
 
 ### 7、更改页面自动刷新频率
