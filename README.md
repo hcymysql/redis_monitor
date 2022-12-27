@@ -23,11 +23,14 @@
 # 一、环境搭建
 
 1）php-redis驱动安装（Centos 7系统）
+
     shell> yum install -y php-pear php-devel php httpd mysql php-mysqlnd php-redis
 
 2）重启httpd服务
+
     shell> systemctl restart httpd.service
 
 3) redis需要授权连接密码
-    >config set requirepass yourPassword
+    127.0.0.1：6379> config set requirepass yourPassword
 
+# 二、mongo_monitor部署
