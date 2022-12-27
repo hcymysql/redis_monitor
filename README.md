@@ -7,3 +7,6 @@
 注：监控环境为Redis 6.2以上版本。
 
 1）Redis状态监控 
+![image](https://raw.githubusercontent.com/hcymysql/redis_monitor/main/image/redis_monitor.jpg)
+
+2）点击图表，可以查看历史曲线图
