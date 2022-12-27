@@ -46,14 +46,14 @@
 
 （注：邮件和微信报警调用的第三方工具，所以这里要赋予可执行权限755）
 
-###1、导入Redis Monitor监控工具表结构（redis_monitor库）
+### 1、导入Redis Monitor监控工具表结构（redis_monitor库）
 
 cd /var/www/html/mongo_monitor/
 
     mysql -uroot -p123456 < redis_monitor_schema.sql
 
 
-###2、录入被监控主机的信息
+### 2、录入被监控主机的信息
 
     mysql> insert  into             `redis_status_info`(`id`,`host`,`tag`,`pwd`,`port`,`monitor`,`send_mail`,`send_mail_to_list`,`send_weixin`,`send_weixin_to_list`,`alarm_threads_running`,`threshold_alarm_threads_running`,`alarm_used_memory_status`,`threshold_warning_used_memory`) values (1,'192.168.176.27','Redis测试','hechunyang123456',6379,1,1,'hechunyang@126.com',1,'hechunyang',NULL,150,NULL,'200M');
 
@@ -81,7 +81,7 @@ threshold_alarm_threads_running字段含义：设置连接数阀值（单位个�
 
 threshold_warning_used_memory字段含义：设置已用内存报警阀值（单位M）
 
-###3、修改conn.php配置文件
+### 3、修改conn.php配置文件
 
     vim /var/www/html/redis_monitor/conn.php
 
@@ -89,7 +89,7 @@ threshold_warning_used_memory字段含义：设置已用内存报警阀值（单
 
 改成你的Redis Monitor监控工具表结构（redis_monitor库）连接信息
 
-###4、修改邮件报警信息
+### 4、修改邮件报警信息
 
     cd /var/www/html/redis_monitor/mail/
 
@@ -103,7 +103,7 @@ threshold_warning_used_memory字段含义：设置已用内存报警阀值（单
 改成你的发件人地址，账号密码，里面的变量不用修改。
 
 
-###5、修改微信报警信息
+### 5、修改微信报警信息
 
     cd /var/www/html/redis_monitor/weixin/
 
@@ -113,14 +113,14 @@ threshold_warning_used_memory字段含义：设置已用内存报警阀值（单
 
 https://github.com/X-Mars/Zabbix-Alert-WeChat/blob/master/README.md 看此教程配置。
 
-6、定时任务每分钟抓取一次
+### 6、定时任务每分钟抓取一次
 
 # crontab -l
     */1 * * * * /usr/bin/php /var/www/html/redis_monitor/check_redis_status.php > /dev/null 2 >&1
     
-###check_redis_status.php（用来采集被监控端Redis状态信息和触发报警）
+##### check_redis_status.php（用来采集被监控端Redis状态信息和触发报警）
 
-7、更改页面自动刷新频率
+### 7、更改页面自动刷新频率
 
     vim redis_status_monitor.php
 
@@ -129,7 +129,7 @@ https://github.com/X-Mars/Zabbix-Alert-WeChat/blob/master/README.md 看此教程
 默认页面每600秒自动刷新一次。
 
 
-8、页面访问
+### 8、页面访问
 
 http://yourIP/mongo_monitor/mongo_replset_monitor.php
 
