@@ -57,8 +57,10 @@ Redis Monitor可以监控单机模式，哨兵模式，集群模式，并且录�
 
 ### 2、录入被监控主机的信息
 
-    mysql> insert into   
-`redis_status_info`(`id`,`host`,`tag`,`pwd`,`port`,`monitor`,`send_mail`,`send_mail_to_list`,`send_weixin`,`send_weixin_to_list`,`alarm_threads_running`,`threshold_alarm_threads_running`,`alarm_used_memory_status`,`threshold_warning_used_memory`) values (1,'192.168.176.27','Redis测试','hechunyang123456',6379,1,1,'hechunyang@126.com',1,'hechunyang',NULL,150,NULL,'200M');
+    mysql> INSERT INTO `redis_status_info`(`id`,`host`,`tag`,`pwd`,`port`,`monitor`,
+    `send_mail`,`send_mail_to_list`,`send_weixin`,`send_weixin_to_list`,`alarm_threads_running`,
+    `threshold_alarm_threads_running`,`alarm_used_memory_status`,`threshold_warning_used_memory`) 
+    VALUES (1,'192.168.176.27','Redis测试','hechunyang123456',6379,1,1,'hechunyang@126.com',1,'hechunyang',NULL,150,NULL,'200M');
 
 注，以下字段可以按照需求变更：
 
@@ -134,6 +136,6 @@ https://github.com/X-Mars/Zabbix-Alert-WeChat/blob/master/README.md 看此教程
 
 ### 8、页面访问
 
-http://yourIP/mongo_monitor/mongo_replset_monitor.php
+http://yourIP/redis_monitor/redis_status_monitor.php
 
 加一个超链接，可方便地接入你们的自动化运维平台里。
