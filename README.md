@@ -50,14 +50,15 @@ Redis Monitor可以监控单机模式，哨兵模式，集群模式，并且录�
 
 ### 1、导入Redis Monitor监控工具表结构（redis_monitor库）
 
-cd /var/www/html/mongo_monitor/
+    cd /var/www/html/mongo_monitor/
 
     mysql -uroot -p123456 < redis_monitor_schema.sql
 
 
 ### 2、录入被监控主机的信息
 
-    mysql> insert  into             `redis_status_info`(`id`,`host`,`tag`,`pwd`,`port`,`monitor`,`send_mail`,`send_mail_to_list`,`send_weixin`,`send_weixin_to_list`,`alarm_threads_running`,`threshold_alarm_threads_running`,`alarm_used_memory_status`,`threshold_warning_used_memory`) values (1,'192.168.176.27','Redis测试','hechunyang123456',6379,1,1,'hechunyang@126.com',1,'hechunyang',NULL,150,NULL,'200M');
+    mysql> insert into   
+`redis_status_info`(`id`,`host`,`tag`,`pwd`,`port`,`monitor`,`send_mail`,`send_mail_to_list`,`send_weixin`,`send_weixin_to_list`,`alarm_threads_running`,`threshold_alarm_threads_running`,`alarm_used_memory_status`,`threshold_warning_used_memory`) values (1,'192.168.176.27','Redis测试','hechunyang123456',6379,1,1,'hechunyang@126.com',1,'hechunyang',NULL,150,NULL,'200M');
 
 注，以下字段可以按照需求变更：
 
