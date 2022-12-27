@@ -10,9 +10,12 @@
 ![image](https://raw.githubusercontent.com/hcymysql/redis_monitor/main/image/redis_monitor.jpg)
 
 2）点击图表，可以查看历史曲线图
-  连接数
+
+    连接数
 ![image](https://raw.githubusercontent.com/hcymysql/redis_monitor/main/image/redis_monitor_history1.png)
-  QPS每秒查询量
+
+    QPS每秒查询量
 ![image](https://raw.githubusercontent.com/hcymysql/redis_monitor/main/image/redis_monitor_history2.png)
-  内存使用率
+
+    内存使用率
 ![image](https://raw.githubusercontent.com/hcymysql/redis_monitor/main/image/redis_monitor_history3.png)
