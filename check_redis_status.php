@@ -1,7 +1,6 @@
 <?php
 
 //https://www.runoob.com/redis/redis-php.html
-//https://www.php.cn/redis/448593.html
 
 error_reporting(E_USER_WARNING | E_USER_NOTICE);
 ini_set('date.timezone','Asia/Shanghai');
@@ -9,9 +8,9 @@ require 'conn.php';
 include 'mail/mail.php';
 include 'weixin/weixin.php';
 
-$redis_ip_info = mysqli_query($con,"select host,tag,pwd,port,monitor,send_mail,send_mail_to_list,send_weixin,send_weixin_to_list,threshold_alarm_threads_running from redis_status_info");
+$redis_ip_info = mysqli_query($con,"select host,tag,pwd,port,monitor,send_mail,send_mail_to_list,send_weixin,send_weixin_to_list,threshold_alarm_threads_running,threshold_warning_used_memory from redis_status_info");
 
-while( list($ip,$tag,$pwd,$port,$monitor,$send_mail,$send_mail_to_list,$send_weixin,$send_weixin_to_list,$threshold_alarm_threads_running) = mysqli_fetch_array($redis_ip_info))
+while( list($ip,$tag,$pwd,$port,$monitor,$send_mail,$send_mail_to_list,$send_weixin,$send_weixin_to_list,$threshold_alarm_threads_running,$threshold_warning_used_memory) = mysqli_fetch_array($redis_ip_info))
 {
 	
 	if($monitor==0 || empty($monitor)){
@@ -191,6 +190,117 @@ while( list($ip,$tag,$pwd,$port,$monitor,$send_mail,$send_mail_to_list,$send_wei
 	
 	//----------------------------------------------------
 	
+      //活动连接数报警
+      if(!empty($threshold_alarm_threads_running) &&  $connected_clients >=$threshold_alarm_threads_running){
+	    //告警---------------------  
+	    if($send_mail==0 || empty($send_mail)){
+        	  echo "被监控主机：$ip  【{$tag}】【端口{$port}】关闭邮件监控报警。"."\n";
+	    } else {
+	    	    $alarm_subject = "【告警】被监控主机：".$ip."  【{$tag}】【端口{$port}】活动连接数超高，请检查。 ".date("Y-m-d H:i:s");
+	    	    $alarm_info = "被监控主机：".$ip."  【{$tag}】【端口{$port}】活动连接数是 " .$connected_clients  ."，高于报警阀值{$threshold_alarm_threads_running}";
+	    	    $sendmail = new mail($send_mail_to_list,$alarm_subject,$alarm_info);
+                $sendmail->execCommand();
+	    }
+
+	    if($send_weixin==0 || empty($send_weixin)){
+        	  echo "被监控主机：$ip  【{$tag}】【端口{$port}】关闭微信监控报警。"."\n";
+	    } else {
+	    	    $alarm_subject = "【告警】被监控主机：".$ip."  【{$tag}】【端口{$port}】活动连接数超高，请检查。 ".date("Y-m-d H:i:s");
+	    	    $alarm_info = "被监控主机：".$ip."  【{$tag}】【端口{$port}】活动连接数是 " .$connected_clients  ."，高于报警阀值{$threshold_alarm_threads_running}";
+	    	    $sendweixin = new weixin($send_weixin_to_list,$alarm_subject,$alarm_info);
+                $sendweixin->execCommand();
+	    }	    
+          if(($send_mail==1 || $send_weixin==1)){		
+	          $update_connect_status = "UPDATE redis_status_info SET alarm_threads_running = 1 WHERE HOST='{$ip}' AND tag='{$tag}' AND PORT=$port";
+	          mysqli_query($con, $update_connect_status);
+	    }
+	}  else {
+	    //恢复---------------------
+            if($send_mail==0 || empty($send_mail)){
+                echo "被监控主机：$ip  【{$tag}】【端口{$port}】关闭邮件监控报警。"."\n";
+            } 
+            if($send_weixin==0 || empty($send_weixin)){
+                echo "被监控主机：$ip  【{$tag}】【端口{$port}】关闭微信监控报警。"."\n";
+            }
+	      if(($send_mail==1 || $send_weixin==1)){
+		    $recover_threads = "SELECT alarm_threads_running FROM redis_status_info WHERE HOST='{$ip}' AND tag='{$tag}' AND PORT='{$port}' ";
+	    	    $recover_threads = mysqli_query($con, $recover_threads);
+	    	    $recover_threads_row = mysqli_fetch_assoc($recover_threads);
+	      }
+	      if(!empty($recover_threads_row['alarm_threads_running']) && $recover_threads_row['alarm_threads_running'] == 1){
+		    $recover_subject = "【恢复】被监控主机：".$ip."  【{$tag}】【端口{$port}】活动连接数已恢复 ".date("Y-m-d H:i:s");
+		    $recover_info = "被监控主机：".$ip."  【{$tag}】【端口{$port}】活动连接数已恢复，当前连接数是 " .$connected_clients;
+		    if($send_mail==1 ){
+			  $sendmail = new mail($send_mail_to_list,$recover_subject,$recover_info);
+			  $sendmail->execCommand();
+		    }
+		    if($send_weixin==1 ){
+			  $sendweixin = new weixin($send_weixin_to_list,$recover_subject,$recover_info);
+			  $sendweixin->execCommand();
+		    }
+		
+		    $update_connect_status = "UPDATE redis_status_info SET alarm_threads_running = 0 WHERE HOST='{$ip}' AND tag='{$tag}' AND PORT='{$port}'";
+		    mysqli_query($con, $update_connect_status);		
+	    }
+	}    	
+       //----------------------------------------------------
+	
+	      //内存报警
+      if(!empty($threshold_warning_used_memory) &&  $used_memory_rss_human >=$threshold_warning_used_memory){
+	    //告警---------------------  
+	    if($send_mail==0 || empty($send_mail)){
+        	  echo "被监控主机：$ip  【{$tag}】【端口{$port}】关闭邮件监控报警。"."\n";
+	    } else {
+	    	    $alarm_subject = "【告警】被监控主机：".$ip."  【{$tag}】【端口{$port}】内存使用率超高，请检查。 ".date("Y-m-d H:i:s");
+	    	    $alarm_info = "被监控主机：".$ip."  【{$tag}】【端口{$port}】内存使用率是 " .$used_memory_rss_human  ."，高于报警阀值{$threshold_warning_used_memory}";
+	    	    $sendmail = new mail($send_mail_to_list,$alarm_subject,$alarm_info);
+                $sendmail->execCommand();
+	    }
+
+	    if($send_weixin==0 || empty($send_weixin)){
+        	  echo "被监控主机：$ip  【{$tag}】【端口{$port}】关闭微信监控报警。"."\n";
+	    } else {
+	    	    $alarm_subject = "【告警】被监控主机：".$ip."  【{$tag}】【端口{$port}】内存使用率超高，请检查。 ".date("Y-m-d H:i:s");
+	    	    $alarm_info = "被监控主机：".$ip."  【{$tag}】【端口{$port}】内存使用率是 " .$used_memory_rss_human  ."，高于报警阀值{$threshold_warning_used_memory}";
+	    	    $sendweixin = new weixin($send_weixin_to_list,$alarm_subject,$alarm_info);
+                $sendweixin->execCommand();
+	    }	    
+          if(($send_mail==1 || $send_weixin==1)){		
+	          $update_alarm_used_memory_status = "UPDATE redis_status_info SET alarm_used_memory_status = 1 WHERE HOST='{$ip}' AND tag='{$tag}' AND PORT=$port";
+	          mysqli_query($con, $update_alarm_used_memory_status);
+	    }
+	}  else {
+	    //恢复---------------------
+            if($send_mail==0 || empty($send_mail)){
+                echo "被监控主机：$ip  【{$tag}】【端口{$port}】关闭邮件监控报警。"."\n";
+            } 
+            if($send_weixin==0 || empty($send_weixin)){
+                echo "被监控主机：$ip  【{$tag}】【端口{$port}】关闭微信监控报警。"."\n";
+            }
+	      if(($send_mail==1 || $send_weixin==1)){
+		    $recover_threads = "SELECT alarm_used_memory_status FROM redis_status_info WHERE HOST='{$ip}' AND tag='{$tag}' AND PORT='{$port}' ";
+	    	    $recover_threads = mysqli_query($con, $recover_threads);
+	    	    $recover_threads_row = mysqli_fetch_assoc($recover_threads);
+	      }
+	      if(!empty($recover_threads_row['alarm_used_memory_status']) && $recover_threads_row['alarm_used_memory_status'] == 1){
+		    $recover_subject = "【恢复】被监控主机：".$ip."  【{$tag}】【端口{$port}】内存使用率已恢复 ".date("Y-m-d H:i:s");
+		    $recover_info = "被监控主机：".$ip."  【{$tag}】【端口{$port}】内存使用率已恢复，当前内存使用率是：" .$used_memory_rss_human;
+		    if($send_mail==1 ){
+			  $sendmail = new mail($send_mail_to_list,$recover_subject,$recover_info);
+			  $sendmail->execCommand();
+		    }
+		    if($send_weixin==1 ){
+			  $sendweixin = new weixin($send_weixin_to_list,$recover_subject,$recover_info);
+			  $sendweixin->execCommand();
+		    }
+		
+		    $update_memory_status = "UPDATE redis_status_info SET alarm_used_memory_status = 0 WHERE HOST='{$ip}' AND tag='{$tag}' AND PORT='{$port}'";
+		    mysqli_query($con, $update_memory_status);		
+	    }
+	}  
+  	
+       //----------------------------------------------------
+	   
 		if (mysqli_query($con, $sql)) {
 			echo "\n{$ip}:'{$port}' 新记录插入成功\n";
 			echo "-------------------------------------------------------------\n\n\n";
