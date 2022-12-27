@@ -19,3 +19,15 @@
 
     内存使用率
 ![image](https://raw.githubusercontent.com/hcymysql/redis_monitor/main/image/redis_monitor_history3.png)
+
+# 一、环境搭建
+
+1）php-redis驱动安装（Centos 7系统）
+    shell> yum install -y php-pear php-devel php httpd mysql php-mysqlnd php-redis
+
+2）重启httpd服务
+    shell> systemctl restart httpd.service
+
+3) redis需要授权连接密码
+    >config set requirepass yourPassword
+
