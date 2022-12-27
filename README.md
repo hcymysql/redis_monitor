@@ -53,7 +53,8 @@ Redis Monitor可以监控单机模式，哨兵模式，集群模式，并且录�
     cd /var/www/html/mongo_monitor/
 
     mysql -uroot -p123456 < redis_monitor_schema.sql
-
+#### 注：mysql_status_history表引擎可以更改为rocksdb引擎，支持数据压缩，这对于减小存储空间以及增快IO效率都有直接的帮助。
+https://www.percona.com/blog/2018/04/30/a-look-at-myrocks-performance/
 
 ### 2、录入被监控主机的信息
 
