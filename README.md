@@ -38,7 +38,7 @@ Redis Monitor可以监控单机模式，哨兵模式，集群模式，并且录�
 
 # 二、Redis monitor部署
 
-把https://github.com/hcymysql/redis_monitor/archive/master.zip安装包解压缩到 /var/www/html/目录下
+把https://github.com/hcymysql/redis_monitor/archive/refs/heads/main.zip 安装包解压缩到 /var/www/html/目录下
 
     cd /var/www/html/redis_monitor/
 
