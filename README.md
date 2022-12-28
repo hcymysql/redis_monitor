@@ -91,7 +91,7 @@ threshold_warning_used_memory字段含义：设置已用内存报警阀值（单
 
     vim /var/www/html/redis_monitor/conn.php
 
-    $con = mysqli_connect("127.0.0.1","admin","hechunyang","redis_monitor","3306") or die("数据库链接错误".mysql_error());
+    $con = mysqli_connect("127.0.0.1","admin","hechunyang","redis_monitor","3306") or die("数据库链接错误".mysqli_error());
 
 改成你的Redis Monitor监控工具表结构（redis_monitor库）连接信息
 
