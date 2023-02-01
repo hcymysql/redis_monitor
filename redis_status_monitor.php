@@ -279,12 +279,20 @@ echo "<td>{$row['db_version']}</td>";
 echo "<td>{$row['runtime']}天</td>";
 echo "<td>{$row['aof_enabled']}</td>";
 echo "<td>{$row['max_connections']}</td>";
-echo "<td>{$row['threads_connected']}</td>";
+if  ($row['alarm_threads_running'] == 1){
+	echo "<td><span class='badge badge-danger'>{$row['threads_connected']}</span></td>";
+} else {
+	echo "<td>{$row['threads_connected']}</td>";
+}
 echo "<td>{$row['blocked_connected']}</td>";
 echo "<td>{$row['rejected_connected']}</td>";
 //echo "<td><a href='javascript:void(0);' onclick=\"x_admin_show('连接数详情','db_connect_statistic.php?ip={$row['1']}&tag={$row['2']}&port={$row['3']}')\">{$row['7']}</a></td>";
 echo "<td>{$row['maxmemory_human']}</td>";
-echo "<td>{$row['used_memory_rss_human']}</td>";
+if ($row['alarm_used_memory_status'] == 1){
+	echo "<td><span class='badge badge-danger'>{$row['used_memory_rss_human']}</span></td>";
+} else {
+	echo "<td>{$row['used_memory_rss_human']}</td>";
+}
 echo "<td>{$row['used_memory_peak_human']}</td>";
 echo "<td>{$row['Seconds_Behind_Master']}</td>";
 echo "<td>{$row['qps']}</td>";
