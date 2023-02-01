@@ -22,6 +22,11 @@ Redis Monitor可以监控单机模式，哨兵模式，集群模式，并且录�
     内存使用率
 ![image](https://raw.githubusercontent.com/hcymysql/redis_monitor/main/image/redis_monitor_history3.png)
 
+3）点击端口号，可以列出改实例下的所有慢日志命令
+
+    慢查询
+![image](https://raw.githubusercontent.com/hcymysql/redis_monitor/main/image/redis_slowlog.png)
+
 # 一、环境搭建
 
 1）php-redis驱动安装（Centos 7系统）
