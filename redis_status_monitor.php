@@ -270,8 +270,8 @@ $status=$row['is_live']==1?'<b><span class="badge badge-success">在线</span></
 echo "<tr>";
 echo "<td>{$row['host']}</td>";
 echo "<td>{$row['tag']}</td>";
-//echo "<td><a href='javascript:void(0);' onclick=\"x_admin_show('统计库里每个表的大小','table_statistic.php?ip={$row['1']}&tag={$row['2']}&port={$row['3']}')\">{$row['2']}</a></td>";
-echo "<td>{$row['port']}</td>";
+echo "<td><a href='javascript:void(0);' onclick=\"x_admin_show('列出当前所有慢查询','slowlog.php?ip={$row['host']}&tag={$row['tag']}&port={$row['port']}')\">{$row['port']}</a></td>";
+//echo "<td>{$row['port']}</td>";
 echo "<td>{$role}</td>";
 echo "<td>{$status}</td>";
 echo "<td>{$row['mode']}</td>";
