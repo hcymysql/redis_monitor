@@ -3,7 +3,6 @@
     $ip = $_GET['ip'];
     $tag = $_GET['tag'];
     $port = $_GET['port'];
-
 ?>
 
 
@@ -66,6 +65,13 @@
 </form> 
 </td>
 
+<td>
+<form action="" method="post">
+<input type="hidden" name="7_day" value="DATE_SUB(now(),interval 168 hour)">
+<button type="submit" name="button" class="btn btn-dark">7 天</button>
+</form>
+</td>
+
 </tr>
 </table>
 
@@ -98,6 +104,10 @@ if(!empty($_POST['2_day'])){
     $interval_time = $_POST['2_day'];
 }
 
+if(!empty($_POST['7_day'])){
+    $interval_time = $_POST['7_day'];
+}
+
 //echo '$interval_time变量值是: ' .$interval_time .'<br>';
 
 ?>
@@ -109,7 +119,7 @@ if(!empty($_POST['2_day'])){
      <div id="qps" style="height:400px"></div>
 	      <?php include 'js/show_graph_qps.php';?> 
 <br><br>
-     <div id="index" style="height:400px"></div>
+     <div id="memory" style="height:400px"></div>
               <?php include 'js/show_used_memory.php';?>
 <br><br>
 
